@@ -1,0 +1,116 @@
+<div class="blank-layout-container justify-content-center">
+  <div class="position-relative row w-100 h-100">
+    <div class="col-lg-8 col-xl-9 bg-gredient p-0">
+      <div class="p-24 h-100">
+        <!-- Logo and theme switch omitted for brevity -->
+        <div class="align-items-center justify-content-center img-height d-none d-lg-flex">
+          <img src="/assets/images/backgrounds/login-bg.svg" alt="login" style="max-width: 500px"/>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-xl-3 p-0 d-flex justify-content-center">
+      <div class="p-32 d-flex align-items-start align-items-lg-center h-100 max-width-form justify-content-center">
+        <div>
+          <h4 class="f-w-700 f-s-20 m-0">Two Step Verification</h4>
+          <span class="f-s-14 d-block mat-body-1 m-t-24">
+            We sent a verification code to your email. Enter the code from the email in the field below.
+          </span>
+          <!-- Inserted Alert and Form from the second code block -->
+          <div class="alert alert-danger" *ngIf="err!=''">
+            <strong>{{ err }}</strong>
+          </div>
+          <form (submit)="onValidateEmail()">
+            <div class="txt_field">
+              <label>Veuillez entrer le code envoyé par mail</label>
+              <input matInput type="text" name="code" [(ngModel)]="code" class="form-control" placeholder="code de confirmation"/>
+            </div>
+            <button mat-flat-button color="primary" class="w-100" type="submit">
+              Verify My Account
+            </button>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .blank-layout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f0f2f5; /* Adjust the background color to match your theme */
+  }
+
+  .bg-gredient {
+    background: linear-gradient(45deg, #f0f2f5, #6610f2); /* Example gradient. Adjust to match your primary color */
+  }
+
+  .p-24 {
+    padding: 24px;
+  }
+
+  .max-width-form {
+    max-width: 400px; /* Adjust as necessary */
+    width: 100%;
+  }
+
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+  }
+
+  .txt_field {
+    margin-bottom: 20px;
+  }
+
+  input.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #141414; /* Light background for input. Adjust as necessary */
+  }
+
+  input.form-control:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  button[type="submit"] {
+    background: #007bff; /* Primary button color */
+    color: #ffffff;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+
+  button[type="submit"]:hover {
+    opacity: 1;
+  }
+
+  .d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .align-items-start {
+    align-items: flex-start;
+  }
+
+  .justify-content-center {
+    justify-content: center;
+  }
+</style>

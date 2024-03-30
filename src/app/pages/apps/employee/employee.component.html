@@ -1,0 +1,151 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Search Tournament"
+            (keyup)="searchTournament($event)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-8 d-flex flex-column align-items-end">
+        <div style="display: flex; gap: 20px;">
+          <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+          <mat-icon>group_add</mat-icon>
+          Add Tournament
+        </button>
+      
+      <button mat-flat-button color="primary" (click)="loadHistoricalTournament()">
+        Historical Matches
+      </button>
+    
+        <button mat-raised-button color="primary" (click)="openAddTeamsDialog()">
+          <mat-icon>person_add</mat-icon>
+          Add Teams
+        </button>
+        </div>
+        <div style="display: flex; gap: 20px; margin-top: 20px;">
+      <button mat-raised-button color="primary" (click)="openRemoveTeamsDialog()">
+        <mat-icon>person_remove</mat-icon>
+        Remove Team
+      </button>
+    
+     </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        <ng-container matColumnDef="idTournament">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">idTournament</th>
+          <td mat-cell *matCellDef="let element"class="f-s-14">{{ element.idTournament }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tournamentName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">tournamentName</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+                  {{ element.tournamentName }}
+                </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Format">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Format</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.format }}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="PrizePool">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">PrizePool</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.prizePool }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dateStart">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateStart
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.dateStart | date : "fullDate" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="dateEnd">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateEnd
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.dateEnd | date : "fullDate" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.status }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="capacity">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Capacity
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.capacity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="teamName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            teamName
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ getTeamNamesForTournament(element) }}
+        </td>
+         
+          </ng-container>
+      
+        <!-- <ng-container matColumnDef="matchName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            matchName
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ getMatchNamesForTournament(element) }}
+        </td>
+         
+          </ng-container>
+       -->
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="openDialog('Update', element)"
+              class="m-r-10 cursor-pointer"
+              ><i-tabler name="edit" class="icon-18"></i-tabler
+            ></a>
+            <a
+              (click)="openDialog('Delete', element)"
+              class="m-r-10 cursor-pointer"
+            >
+              <i-tabler name="trash" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

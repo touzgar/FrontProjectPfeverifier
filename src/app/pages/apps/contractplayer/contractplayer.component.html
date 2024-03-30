@@ -1,0 +1,119 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Search Contract"
+            (keyup)="searchContract($event)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+          Add Contract
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">#</th>
+          <td mat-cell *matCellDef="let element">{{ element.idContractPlayer }}</td>
+        </ng-container>
+
+        
+
+        <ng-container matColumnDef="detailsContractuels">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            detailsContractuels
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.detailsContractuels }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="termesFinanciers">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            termesFinanciers
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.termesFinanciers }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateStart">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateStart
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.dateStart | date : "fullDate" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="dateEnd">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateEnd
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.dateEnd | date : "fullDate" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="objectifs">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            objectifs
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.objectifs }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="clausesSpecifiques">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            clausesSpecifiques
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.clausesSpecifiques }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="playerName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">PlayeName</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ getPlayerNamesForContractPlayer(element) }}</td>
+        </ng-container>
+                
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="openDialog('Update', element)"
+              class="m-r-10 cursor-pointer"
+              ><i-tabler name="edit" class="icon-18"></i-tabler
+            ></a>
+            <a
+              (click)="openDialog('Delete', element)"
+              class="m-r-10 cursor-pointer"
+            >
+              <i-tabler name="trash" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

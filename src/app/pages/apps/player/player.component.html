@@ -1,0 +1,201 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Search Player"
+            (keyup)="searchPlayers($event)"
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+          Add Player
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        
+
+
+        <ng-container matColumnDef="playerId">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">ID</th>
+          <td mat-cell *matCellDef="let element">{{  element.idPlayer }}</td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">namePlayer</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex align-items-center">
+              <img
+                class="rounded-circle"
+                [src]="element.imagePath"
+                width="40"
+              />
+              <div class="m-l-16">
+                <p class="f-w-600 mat-subtitle-1 f-s-16 m-t-0">
+                  {{ element.leagalefullname }}
+                </p>
+             
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+
+
+
+        <ng-container matColumnDef="inGameName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">inGameName</th>
+          <td mat-cell *matCellDef="let element">{{  element.inGameName }}</td>
+        </ng-container>
+
+
+
+
+
+        <ng-container matColumnDef="dateOfBirth">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateOfBirth
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.dateOfBirth | date : "fullDate" }}</td>
+        </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <ng-container matColumnDef="mailAdress">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Email
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.mailAdress }}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="discordId">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            discordId
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.discordId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="countryOfResidence">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            countryOfResidence
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.countryOfResidence }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="jerseySize">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            jerseySize
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.jerseySize }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="whatsappPhone">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            whatsappPhone
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{element.whatsappPhone }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="contratStart">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            contratStart
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.contratStart | date : "fullDate" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="contratEnd">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            contratEnd
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.contratEnd | date : "fullDate" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="salary">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Salary
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.salary }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="socialMediaLinks">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            socialMediaLinks
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.socialMediaLinks }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="openDialog('Update', element)"
+              class="m-r-10 cursor-pointer"
+              ><i-tabler name="edit" class="icon-18"></i-tabler
+            ></a>
+            <a
+              (click)="openDialog('Delete', element)"
+              class="m-r-10 cursor-pointer"
+            >
+              <i-tabler name="trash" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+<style>
+  /* ...other styles... */
+
+  /* Specific alignment for countryOfResidence and jerseySize cells */
+  .mat-column-countryOfResidence .mat-cell,
+  .mat-column-jerseySize .mat-cell {
+    padding-left: 8px; /* Adjust the value as needed */
+    text-align: left;
+  }
+</style>
+
+<!-- Your existing component HTML -->

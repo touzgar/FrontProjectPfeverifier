@@ -1,0 +1,97 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input matInput placeholder="Search Coach" (keyup)="rechercherCoach($event)">
+
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button (click)="openDialog('Add', {})" color="primary">
+          <mat-icon>group_add</mat-icon>
+          Add Coach
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        <ng-container matColumnDef="idCoach">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">idCoach</th>
+          <td mat-cell *matCellDef="let coach">{{ coach.idCoach }}</td>
+        </ng-container>
+
+        
+
+        <ng-container matColumnDef="nameCoach">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            coachName
+          </th>
+          <td mat-cell *matCellDef="let coach" class="f-s-14">{{ coach.nameCoach }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            email
+          </th>
+          <td mat-cell *matCellDef="let coach" class="f-s-14">
+            {{ coach.email }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rapport">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Rapport
+          </th>
+          <td mat-cell *matCellDef="let coach" class="f-s-14">
+            {{ coach.rapport ?? 'No report available' }}
+          </td>
+          
+        </ng-container>
+        
+       
+       <!-- Corrected to match the provided data structure -->
+<ng-container matColumnDef="clubName">
+  <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Club Name</th>
+  <td mat-cell *matCellDef="let coach" class="f-s-14">{{ coach.clubName ?? 'No Club Assigned' }}</td>
+</ng-container>
+
+        
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="openDialog('Update', element)"
+              class="m-r-10 cursor-pointer"
+              ><i-tabler name="edit" class="icon-18"></i-tabler
+            ></a>
+            <a
+              (click)="openDialog('Delete', element)"
+              class="m-r-10 cursor-pointer"
+            >
+              <i-tabler name="trash" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20,30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

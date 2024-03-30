@@ -1,0 +1,71 @@
+<h2 mat-dialog-title class="f-w-500 m-b-24">
+  <span *ngIf="action === 'Add'">Add New Defi</span>
+  <span *ngIf="action === 'Update'">Update Defi</span>
+  <span *ngIf="action === 'Delete'">Confirm Delete</span>
+</h2>
+
+<mat-dialog-content class="mat-typography" style="max-width: 600px">
+  <form *ngIf="action !== 'Delete'" #defiForm="ngForm">
+    <!-- Fields for Adding a New Defi -->
+    <ng-container *ngIf="action === 'Add'">
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Tournament Name</mat-label>
+            <input matInput placeholder="Tournament Name" [(ngModel)]="local_data.tournamentName" name="tournamentName" required>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Match Description</mat-label>
+            <textarea matInput placeholder="Match Description" [(ngModel)]="local_data.matchDescription" name="matchDescription" required></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Match Date Time</mat-label>
+            <input type="datetime-local" matInput [(ngModel)]="local_data.matchDateTime" name="matchDateTime" required>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Fields for Updating a Defi -->
+    <ng-container *ngIf="action === 'Update'">
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Match Name</mat-label>
+            <input matInput placeholder="Match Name" [(ngModel)]="local_data.matchName" name="matchName" required>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Date Start</mat-label>
+            <input type="text" matInput [(ngModel)]="local_data.dateStart" name="dateStart" required>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field appearance="outline" class="w-100 mb-2">
+            <mat-label>Result</mat-label>
+            <input matInput placeholder="Result" [(ngModel)]="local_data.result" name="result" required>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+    
+    <div class="actions align-items-center justify-content-end d-flex pt-2">
+      <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button color="primary" [disabled]="!defiForm.valid" (click)="doAction()" class="ml-2">{{ action }}</button>
+    </div>
+  </form>
+
+  <!-- Delete Confirmation -->
+  <div *ngIf="action === 'Delete'" class="p-x-24">
+    <p>Are you sure you want to delete <strong>{{local_data.matchName}}</strong>?</p>
+    <div class="d-flex justify-content-end p-t-24">
+      <button mat-button (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button color="warn" (click)="doAction()">Delete</button>
+    </div>
+  </div>
+</mat-dialog-content>

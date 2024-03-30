@@ -1,0 +1,102 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="row justify-content-between">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100 hide-hint">
+          <input
+            matInput
+            placeholder="Search Defi"
+            (keyup)="searchMatchs($event)"
+
+          />
+          <mat-icon matSuffix>
+            <i-tabler name="search" class="icon-20"></i-tabler>
+          </mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center justify-content-end">
+        <button mat-flat-button (click)="openDialog('Add', {})" color="primary" style="margin-right: 10px;">
+          Add defie
+        </button>
+        <button mat-flat-button color="primary" (click)="loadHistoricalMatches()">
+          Historical Matches
+        </button>
+      </div>
+      
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card class="cardWithShadow">
+  <mat-card-content class="p-24">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">#</th>
+          <td mat-cell *matCellDef="let element">{{ element.idMatch }}</td>
+        </ng-container>
+
+        
+
+        <ng-container matColumnDef="matchName">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            matchName
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">{{ element.matchName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateStart">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            dateStart
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.dateStart | date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="result">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            result
+          </th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            {{ element.result}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="tournamentName">
+          <th mat-header-cell *matHeaderCellDef> Tournament Name </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getTournamentNamesForDefi(element) }}
+          </td>
+        </ng-container>
+        
+
+
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <a
+              (click)="openDialog('Update', element)"
+              class="m-r-10 cursor-pointer"
+              ><i-tabler name="edit" class="icon-18"></i-tabler
+            ></a>
+            <a
+              (click)="openDialog('Delete', element)"
+              class="m-r-10 cursor-pointer"
+            >
+              <i-tabler name="trash" class="icon-18"></i-tabler>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

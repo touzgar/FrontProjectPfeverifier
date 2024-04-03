@@ -6,7 +6,7 @@
           <input
             matInput
             placeholder="Search SessionTraining"
-            (keyup)="applyFilter($any($event.target).value)"
+            (keyup)="searchSession($event)"
           />
           <mat-icon matSuffix>
             <i-tabler name="search" class="icon-20"></i-tabler>
@@ -75,6 +75,18 @@
             {{ element.feedbacksEntraineurs }}
           </td>
         </ng-container>
+      <!-- Coach Name Column -->
+<ng-container matColumnDef="coachName">
+  <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> CoachName </th>
+  <td mat-cell *matCellDef="let element"class="f-s-14"> {{getCoachNamesForSession(element)}} </td>
+</ng-container>
+
+<!-- Player Names Column -->
+<ng-container matColumnDef="playerName">
+  <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> PlayerNames </th>
+  <td mat-cell *matCellDef="let element"class="f-s-14" >{{getPlayerNamesForSession(element)}} </td>
+</ng-container>
+
 
 
       

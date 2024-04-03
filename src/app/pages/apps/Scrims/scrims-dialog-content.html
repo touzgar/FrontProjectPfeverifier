@@ -63,16 +63,93 @@
         <mat-form-field appearance="outline" class="w-100">
           <input
             type="text"
-            placeholder="scrimsPlayers"
+            placeholder="playerNames"
             matInput
             required
-            id="scrimsPlayers"    
-            name="scrimsPlayers"
-            [(ngModel)]="local_data.scrimsPlayers "
+            id="playerNames"    
+            name="playerNames"
+            [(ngModel)]="local_data.playerNames"
           />
         </mat-form-field>
       </div>
-      
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            matInput
+            required
+            id="sessionName"
+            name="sessionName"
+            [(ngModel)]="local_data.sessionName"
+            placeholder="sessionName"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="date"
+            matInput
+        
+            id="dateStart"
+            name="dateStart"
+            [(ngModel)]="local_data.dateStart"
+            placeholder="dateStart"
+          />
+        </mat-form-field>
+      </div>
+
+
+      <div class="col-lg-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="date"
+            matInput
+            
+            id="dateEnd"
+            name="dateEnd"
+            [(ngModel)]="local_data.dateEnd"
+            placeholder="dateEnd"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            placeholder="objectifs"
+            matInput
+            required
+            id="objectifs"
+            name="objectifs"
+            [(ngModel)]="local_data.objectifs"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            type="text"
+            placeholder="feedbacksEntraineurs"
+            matInput
+            required
+            id="feedbacksEntraineurs"    
+            name="feedbacksEntraineurs"
+            [(ngModel)]="local_data.feedbacksEntraineurs "
+          />
+        </mat-form-field>
+      </div>
+      <!-- ... existing fields ... -->
+
+<!-- Field for coachName -->
+<div class="col-lg-4">
+<mat-form-field appearance="outline" class="w-100">
+  <input matInput required id="coachName" name="coachName"  type="text"
+
+         [(ngModel)]="local_data.coachName" placeholder="Coach Name">
+</mat-form-field>
+</div>
     </div>
     <button
       mat-flat-button

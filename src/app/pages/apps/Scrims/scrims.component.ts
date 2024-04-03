@@ -1,49 +1,43 @@
-import { Component, Inject, Optional, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Inject, Optional, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AppAddScrimsComponent } from './add/add.component';
+import { Scrims } from './Scrims.model';
+import { ScrimsService } from './scrims.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
-export interface Scrims {
-  description: string;
-  niveau: string;
-  mode: string;
-  specialObjectives: string[];
-  scrimsPlayers: string[];
-}
-
-const Scrimss= [
-  {
-    description: "description",
-    niveau: ' niveau',
-    mode:"mode",
-    specialObjectives:["sdfkj","jejez;"],
-    scrimsPlayers:["sdfkj","jejez;"],
-  },
-];
 
 @Component({
   templateUrl: './scrims.component.html',
 })
 export class AppScrimsComponent implements AfterViewInit {
+  scrims:Scrims[];
+  titleScrims!:string;
+  allScrims!:Scrims[];
+  searchTerm!:string;
+ 
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   searchText: any;
   displayedColumns: string[] = [
     'description',
     'niveau',
     'specialObjectives',
-    'scrimsPlayers',
+    'mode',
+    // 'playerNames',
     'action'
 
   ];
-  dataSource = new MatTableDataSource(Scrimss);
+  dataSource = new MatTableDataSource<Scrims>([]);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
 
-  constructor(public dialog: MatDialog, public datePipe: DatePipe) { }
+  constructor(public dialog: MatDialog, public datePipe: DatePipe,private scrimsService:ScrimsService,
+    private changeDetectorRefs: ChangeDetectorRef,private router:Router, private activateRoute: ActivatedRoute) { }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.chargerScrims();
   }
 
   applyFilter(filterValue: string): void {
@@ -57,48 +51,151 @@ export class AppScrimsComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === 'Add') {
+        this.addScrims(result.data);
         this.addRowData(result.data);
       } else if (result.event === 'Update') {
+        this.modifierScrims(result.data);
         this.updateRowData(result.data);
       } else if (result.event === 'Delete') {
+        this.deleteScrims(result.data);
         this.deleteRowData(result.data);
       }
     });
   }
+  chargerScrims() {
+    this.scrimsService.listeScrims().subscribe(scrims => {
+      this.dataSource.data = scrims;
+      this.changeDetectorRefs.detectChanges(); // Ensure UI updates with new data
+    });
+  }
+  deleteScrims(scrims:Scrims){
+    this.scrimsService.supprimerScrims(scrims.idSession!).subscribe(() => {
+      console.log('Session supprimé');
+      this.chargerScrims();
+   });
+  }
+  modifierScrims(scrims: any): void {
+    const id = scrims.idSession;
+  
+   // If playerNames is a string of comma-separated values, convert it to an array
+    let playerNamesArray: string[] = [];
+    if (typeof scrims. scrimsPlayer === 'string') {
+      playerNamesArray = scrims. scrimsPlayer.split(',').map((name: string) => name.trim());
+    } else {
+      playerNamesArray = scrims.scrimsPlayer;
+    }
+    
+    let scrimsArray: string[] = [];
+    if (typeof scrims.specialObjectives === 'string') {
+      scrimsArray = scrims.specialObjectives.split(',').map((name: string) => name.trim());
+    } else {
+      scrimsArray = scrims.specialObjectives;
+    }
+    
+  
+    const updateData: Scrims = {
+      ...scrims,
+      
+      //playerNames: playerNamesArray,
+            specialObjectives: scrimsArray,
 
+    };
+  
+    this.scrimsService.updateScrims(id, updateData).subscribe({
+      next: (response) => {
+        console.log('Scrims updated successfully', response);
+        this.chargerScrims(); // Refresh the list
+      },
+      error: (error) => {
+        console.error('Error updating Scrims', error);
+      }
+    });
+  }
+
+  getPlayerNamesForScrims(scrims: Scrims): string {
+    // Ensure the property you're accessing matches what's available in your Scrims model
+    if (!scrims.playerNames) { // This should match the actual property name
+      return 'No Players'; // Or any default message you prefer
+    }
+    return scrims.playerNames.join(', '); // This joins the player names array into a comma-separated string
+}
+
+addScrims(sessionData: any): void {
+  let dateStartISO, dateEndISO: string;
+
+  try {
+    sessionData.dateStart = this.toISODateString(sessionData.dateStart);
+    sessionData.dateEnd = this.toISODateString(sessionData.dateEnd);
+  } catch (error) {
+    console.error('Date conversion error:', error);
+    return;
+  }
+  // Assuming 'objectives' needs to be an array of strings
+  const objectivesFormatted = Array.isArray(sessionData.objectives) 
+    ? sessionData.objectives 
+    : [sessionData.objectives];
+    const specialObjective=Array.isArray(sessionData.specialObjective)?sessionData.specialObjective:[sessionData.specialObjective];
+
+  // Prepare the players array
+  const playerNamesFormatted = sessionData.playerNames 
+    ? sessionData.playerNames.split(',').map((name: string) => name.trim()) 
+    : [];
+
+  // Construct the payload ensuring structure aligns with backend expectations
+  const payload = {
+    sessionName: sessionData.sessionName.trim(),
+    dateStart: dateStartISO,
+ //   dateEnd: dateEndISO,
+    objectivesNames: objectivesFormatted,
+    specialObject:specialObjective,
+    feedbacksEntraineurs: sessionData.feedbacksEntraineurs.trim(),
+    mode: sessionData.mode,
+    niveau: sessionData.niveau,
+    description: sessionData.description,
+    coachName: sessionData.coachName.trim(),
+    playerNames: playerNamesFormatted
+  };
+
+  this.scrimsService.addScrims(sessionData).subscribe({
+    next: (response) => {
+      console.log("Session added successfully", response);
+      // Refresh your list or close dialog as necessary
+    },
+    error: (error) => {
+      console.error("Error adding session", error);
+      // Handle error
+    }
+  });
+}
+
+private toISODateString(date: any): string {
+  if (date instanceof Date) {
+    return date.toISOString();
+  }
+  const parsedDate = new Date(date);
+  if (!isNaN(parsedDate.getTime())) {
+    return parsedDate.toISOString();
+  } else {
+    throw new Error('Invalid date input');
+  }
+}
+
+  
   // tslint:disable-next-line - Disables all
   addRowData(row_obj: Scrims): void {
-    this.dataSource.data.unshift({
-      description: row_obj.description,
-      niveau: row_obj.niveau,
-      mode: row_obj.mode,
-      specialObjectives: row_obj.specialObjectives,
-      scrimsPlayers: row_obj.scrimsPlayers,
     
-    });
     this.dialog.open(AppAddScrimsComponent);
     this.table.renderRows();
   }
 
   // tslint:disable-next-line - Disables all
   updateRowData(row_obj: Scrims): boolean | any {
-    this.dataSource.data = this.dataSource.data.filter((value: any) => {
-      
-        value.description = row_obj.description;
-        value.niveau = row_obj.niveau;
-        value.mode = row_obj.mode;
-        value.specialObjectives = row_obj.specialObjectives;
-        value.scrimsPlayers=row_obj.scrimsPlayers;
-      
-      return true;
-    });
+    
   }
 
   // tslint:disable-next-line - Disables all
   deleteRowData(row_obj: Scrims): boolean | any {
-    this.dataSource.data = this.dataSource.data.filter((value: any) => {
-      return value.description !== row_obj.description;
-    });
+    
   }
 }
 
@@ -161,3 +258,7 @@ export class AppScrimsDialogContentComponent {
     };
   }
 }
+function toISODateString(dateStart: any): any {
+  throw new Error('Function not implemented.');
+}
+

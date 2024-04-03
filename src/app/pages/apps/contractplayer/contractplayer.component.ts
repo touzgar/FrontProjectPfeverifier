@@ -107,13 +107,30 @@ export class AppContractPlayerComponent implements AfterViewInit {
       }
     });
   }
- // In your Angular component that calls the service
+//  // In your Angular component that calls the service
 
+// addContractPlayer(contractPlayerData: ContractPlayer) {
+//   // Ensure 'objectifs' is formatted as an array
+//   const payload = {
+//     ...contractPlayerData,
+//     objectifs: Array.isArray(contractPlayerData.objectifs) ? contractPlayerData.objectifs : [contractPlayerData.objectifs]
+//   };
+
+//   this.contractPlayerService.addContractPlayer(payload).subscribe({
+//     next: (newContractPlayer) => {
+//       console.log("ContractPlayer added successfully", newContractPlayer);
+//       this.chargerContractPlayer(); // Refresh the list of contract players
+//     },
+//     error: (error) => {
+//       console.error("Error adding ContractPlayer", error);
+//     }
+//   });
+// }
 addContractPlayer(contractPlayerData: ContractPlayer) {
   // Ensure 'objectifs' is formatted as an array
-  const payload = {
+  const payload: ContractPlayer = {
     ...contractPlayerData,
-    objectifs: Array.isArray(contractPlayerData.objectifs) ? contractPlayerData.objectifs : [contractPlayerData.objectifs]
+    objectifs: Array.isArray(contractPlayerData.objectifs) ? contractPlayerData.objectifs : [contractPlayerData.objectifs],
   };
 
   this.contractPlayerService.addContractPlayer(payload).subscribe({

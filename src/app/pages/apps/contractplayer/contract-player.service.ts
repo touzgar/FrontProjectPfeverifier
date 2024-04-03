@@ -51,11 +51,13 @@ updateContractPlayer(id: number, ContractPlayerData: ContractPlayer): Observable
 // In ContractPlayerService
 
 addContractPlayer(contractPlayer: ContractPlayer): Observable<ContractPlayer> {
-  const jwt = "Bearer " + this.authService.getToken();
-  const httpHeaders = new HttpHeaders({ "Authorization": jwt });
+  let jwt = this.authService.getToken();
+  jwt = "Bearer " + jwt;
+  let httpHeaders = new HttpHeaders({ "Authorization": jwt });
 
   return this.http.post<ContractPlayer>(`${this.baseUrl}/add`, contractPlayer, { headers: httpHeaders });
 }
+
 
 rechercheParNameContractPlayer(playerName: string): Observable<ContractPlayer[]> {
   const url = `${this.baseUrl}/search?name=${playerName}`;

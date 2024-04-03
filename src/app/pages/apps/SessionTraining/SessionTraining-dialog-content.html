@@ -71,6 +71,26 @@
           />
         </mat-form-field>
       </div>
+      <!-- ... existing fields ... -->
+
+<!-- Field for coachName -->
+<div class="col-lg-4">
+<mat-form-field appearance="outline" class="w-100">
+  <input matInput required id="coachName" name="coachName"  type="text"
+
+         [(ngModel)]="local_data.coachName" placeholder="Coach Name">
+</mat-form-field>
+</div>
+<!-- Field for playerNames -->
+<div class="col-lg-4">
+<mat-form-field appearance="outline" class="w-100">
+  <input matInput id="playerNames" name="playerNames"
+         [(ngModel)]="local_data.playerNames" placeholder="Player Names (comma-separated)">
+</mat-form-field>
+</div>
+<!-- ... existing buttons ... -->
+
+      
       
     </div>
     <button
